@@ -1,0 +1,21 @@
+Module SynchroMapper.py allows for synchronized job mapping through AMPQRabbit.
+
+To use Synchromapper, simply import it into a project and call Synchromapper.ExecuteMap(numnodes, exchangeName)
+
+Function explanation:
+
+ExecuteMap(numnodes, exchangeName):
+    """   
+    Performs the split mapping through pywren and prints the results of the process through standard output.
+    Params:
+        numnodes: the number of map nodes you wish to spawn
+        exchangeName: the exchange you want the nodes to use for communication. IF THE EXCHANGE ALREADY EXISTS, 
+			IT MUST BE CONFIGURED FOR FANOUT TYPE. If it doesn't, the function will create it.
+    
+    Returns: Nothing
+    
+    Output:
+        The output format is a list of dictionaries, where list[0] is the output from the master node (which
+        stores the order in which nodes have written), and then the ordered output of each node as a dictionary
+    {node_identifier:map_results}
+    """
