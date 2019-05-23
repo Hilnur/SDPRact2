@@ -1,6 +1,11 @@
 Module SynchroMapper.py allows for synchronized job mapping through AMPQRabbit.
 
-To use Synchromapper, simply import it into a project and call Synchromapper.ExecuteMap(numnodes, exchangeName)
+To use Synchromapper, simply import it  into a project and call ExecuteMap(numnodes, exchangeName) function, for example: 
+
+	import  SynchroMapper 
+		SynchroMapper.ExecuteMap(10, 'testExchange')
+
+
 
 Function explanation:
 
