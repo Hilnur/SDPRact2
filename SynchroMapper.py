@@ -154,4 +154,4 @@ def ExecuteMap(numnodes, exchangeName):
     result = pw.get_result()
     print(result)
     
-ExecuteMap(19, 'testExchange')
+#ExecuteMap(19, 'testExchange')
