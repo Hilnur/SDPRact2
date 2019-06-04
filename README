@@ -1,6 +1,7 @@
 Module SynchroMapper.py allows for synchronized job mapping through AMPQRabbit.
 
 To use Synchromapper, simply import it into a project and call Synchromapper.ExecuteMap(numnodes, exchangeName)
+ADDED NOTE: Add the url for your rabbitmq service to a file named amqkey.txt in your working directory in order to use your own rabbit service
 
 Function explanation:
 

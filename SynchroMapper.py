@@ -8,10 +8,11 @@ Created on 8 may. 2019
 import json
 import pywren_ibm_cloud as pywren
 import pika, random
+import sys
 
-def myServerFunction(exchangeName, nodes):
-    url= 'amqp://acsihjnn:Nzc7ufwFU7IDp4if5n6J6o3e4hgwoUOa@caterpillar.rmq.cloudamqp.com/acsihjnn'
-    params = pika.URLParameters(url)
+def myServerFunction(exchangeName, nodes, rabbiturl):
+    #url=rabbiturl
+    params = pika.URLParameters(rabbiturl)
     connection = pika.BlockingConnection(params)
     channel = connection.channel() # start a channel
     channel.queue_declare(queue='petitions')
@@ -76,11 +77,11 @@ def myServerFunction(exchangeName, nodes):
     channel.close()
     return {'nodeWriteOrder':identifiers}
     
-def my_map_function(idm, exchangeName):
+def my_map_function(idm, exchangeName, rabbiturl):
     
     results=[]
-    url = 'amqp://acsihjnn:Nzc7ufwFU7IDp4if5n6J6o3e4hgwoUOa@caterpillar.rmq.cloudamqp.com/acsihjnn'
-    params = pika.URLParameters(url)
+    #url=rabbiturl
+    params = pika.URLParameters(rabbiturl)
     connection = pika.BlockingConnection(params)
     channel = connection.channel() # start a channel
     
@@ -139,19 +140,28 @@ def ExecuteMap(numnodes, exchangeName):
         stores the order in which nodes have written), and then the ordered output of each node as a dictionary
     {node_identifier:map_results}
     """
-    
+    try:
+        file=open('amqkey.txt', '+r')
+        url=file.read()
+        file.close()
+    except IOError:
+        print('rabbitmq url not found!')
+        sys.exit(1)
+        
     pw = pywren.ibm_cf_executor(rabbitmq_monitor=True)
     #start server
-    args={'exchangeName':exchangeName, 'nodes':numnodes}
+    args={'exchangeName':exchangeName, 'nodes':numnodes, 'rabbiturl':url}
+    print('Getting ready to create server')
     pw.call_async(myServerFunction, args)
     #start nodes
     iterdata=[]
-    params={'idm':0, 'exchangeName':exchangeName}
+    params={'idm':0, 'exchangeName':exchangeName, 'rabbiturl':url}
     for i in range(numnodes):
         params['idm']=i
         iterdata.append(params.copy())
+    print('Getting ready to create nodes')
     pw.map(my_map_function, iterdata)
     result = pw.get_result()
     print(result)
     
-ExecuteMap(19, 'testExchange')
+ExecuteMap(15, 'testExchange')
