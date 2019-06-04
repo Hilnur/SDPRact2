@@ -1,1 +1,0 @@
-amqp://acsihjnn:Nzc7ufwFU7IDp4if5n6J6o3e4hgwoUOa@caterpillar.rmq.cloudamqp.com/acsihjnn
