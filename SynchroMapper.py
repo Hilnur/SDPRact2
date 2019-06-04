@@ -11,7 +11,6 @@ import pika, random
 import sys
 
 def myServerFunction(exchangeName, nodes, rabbiturl):
-    #url=rabbiturl
     params = pika.URLParameters(rabbiturl)
     connection = pika.BlockingConnection(params)
     channel = connection.channel() # start a channel
@@ -77,10 +76,8 @@ def myServerFunction(exchangeName, nodes, rabbiturl):
     channel.close()
     return {'nodeWriteOrder':identifiers}
     
-def my_map_function(idm, exchangeName, rabbiturl):
-    
+def my_map_function(idm, exchangeName, rabbiturl): 
     results=[]
-    #url=rabbiturl
     params = pika.URLParameters(rabbiturl)
     connection = pika.BlockingConnection(params)
     channel = connection.channel() # start a channel
